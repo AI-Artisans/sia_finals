@@ -15,11 +15,11 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.GCP_VM_IP }} >> ~/.ssh/known_hosts
-        echo "${{ secrets.SSH_PRIVATE_KEY }}"
-        echo "${{ secrets.GCP_VM_IP }}"
 
     - name: Deploy to GCP VM
       run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}"
+        echo "${{ secrets.GCP_VM_IP }}"
         ssh ${{ secrets.GCP_VM_USER }}@${{ secrets.GCP_VM_IP }} << 'EOF'
           cd /var/www/html
           git pull origin main
