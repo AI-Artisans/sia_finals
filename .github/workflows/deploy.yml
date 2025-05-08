@@ -1,24 +1,20 @@
 name: Deploy to GCP VM
-
 on:
   push:
-    branches: [main]
-
+    branches:
+      - main  # Deploy when code is pushed to main branch
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.GCP_VM_IP }} >> ~/.ssh/known_hosts
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: Deploy to GCP VM
-      run: |
-        ssh -vvv ${{ secrets.GCP_VM_USER }}@${{ secrets.GCP_VM_IP }} << 'EOF'
-        echo "Connected to GCP VM"
-        EOF
-      
+      - name: Setup SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
+          chmod 600 ssh_key
+
+      - name: Deploy to GCP VM
+        run: |
+          ssh -i ssh_key -o StrictHostKeyChecking=no jrdkho@34.44.111.53 "cd /var/www/html && git pull && systemctl restart apache2"
