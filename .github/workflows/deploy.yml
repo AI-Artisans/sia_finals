@@ -17,4 +17,4 @@ jobs:
 
       - name: Deploy to GCP VM
         run: |
-          ssh -i ssh_key -o StrictHostKeyChecking=no jrdkho@34.44.111.53 "cd /var/www/html && git pull && systemctl restart apache2"
+          ssh -i ssh_key jrdkho@34.135.55.180 "cd /var/www/html && git pull && systemctl restart apache2"
