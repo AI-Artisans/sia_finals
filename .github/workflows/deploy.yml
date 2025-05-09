@@ -22,8 +22,9 @@ jobs:
     - name: Deploy via SSH
       run: |
         ssh ${{ secrets.GCP_VM_USER }}@${{ secrets.GCP_VM_IP }} << 'EOF'
-          cd /var/www/html/sia_finals
+          cd /var/www/sia_finals
           git pull origin main
+          mv /var/www/sia_finals/sia_app /var/www/html/
           # Run deployment steps, e.g., composer install, npm build, restart services
           # e.g., sudo systemctl restart apache2
         EOF
